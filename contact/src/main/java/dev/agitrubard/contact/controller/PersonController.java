@@ -30,7 +30,7 @@ class PersonController {
 
         List<Person> people = personService.findAll(
                 pageable.getPage(),
-                pageable.getSize()
+                pageable.getPageSize()
         );
 
         return CustomSuccessResponse.success(

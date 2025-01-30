@@ -15,7 +15,7 @@ public final class CustomPageRequest {
     @Getter
     @NotNull
     @Range(min = 1, max = 15)
-    private int size;
+    private int pageSize;
 
 
     public int getPage() {
