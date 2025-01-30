@@ -1,0 +1,9 @@
+services:
+  contact-service-database:
+    extends:
+      file: ./contact/docker-compose.yml
+      service: contact-service-database
+
+networks:
+  contacts_app_network:
+    driver: bridge
