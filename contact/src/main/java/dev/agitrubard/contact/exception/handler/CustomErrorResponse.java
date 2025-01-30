@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Builder
-class CustomErrorResponse {
+public class CustomErrorResponse {
 
     @Builder.Default
     private final LocalDateTime time = LocalDateTime.now();
