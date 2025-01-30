@@ -1,4 +1,4 @@
-package dev.agitrubard.contact.model;
+package dev.agitrubard.contact.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class CustomSuccessResponse<T> {
+public final class CustomSuccessResponse<T> {
 
     @Builder.Default
     private final LocalDateTime time = LocalDateTime.now();

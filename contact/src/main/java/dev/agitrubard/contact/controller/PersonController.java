@@ -1,6 +1,6 @@
 package dev.agitrubard.contact.controller;
 
-import dev.agitrubard.contact.model.CustomSuccessResponse;
+import dev.agitrubard.contact.model.response.CustomSuccessResponse;
 import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.mapper.PersonToListResponseMapper;
 import dev.agitrubard.contact.model.request.CustomPageRequest;
