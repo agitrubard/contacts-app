@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
@@ -22,26 +21,6 @@ public class CustomErrorResponse {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<SubError> subErrors;
-
-
-    @Getter
-    @Builder
-    public static class SubError {
-
-        private String message;
-
-        private String field;
-
-        @JsonInclude(JsonInclude.Include.NON_NULL)
-        private Object value;
-
-        @JsonInclude(JsonInclude.Include.NON_NULL)
-        private String type;
-
-    }
 
 
     @Getter
