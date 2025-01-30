@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PersonService {
 
-    List<Person> findAll(int page, int size);
+    List<Person> findAll(Integer page, Integer size);
 
 }

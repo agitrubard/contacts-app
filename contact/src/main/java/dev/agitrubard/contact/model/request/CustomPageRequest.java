@@ -5,21 +5,16 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
+@Getter
 @Setter
 public final class CustomPageRequest {
 
     @Range(min = 1)
     @NotNull
-    private int page;
+    private Integer page;
 
-    @Getter
     @NotNull
     @Range(min = 1, max = 15)
-    private int size;
-
-
-    public int getPage() {
-        return this.page - 1;
-    }
+    private Integer pageSize;
 
 }

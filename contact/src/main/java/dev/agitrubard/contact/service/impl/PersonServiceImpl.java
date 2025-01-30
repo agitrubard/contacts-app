@@ -16,7 +16,7 @@ class PersonServiceImpl implements PersonService {
 
 
     @Override
-    public List<Person> findAll(int page, int size) {
+    public List<Person> findAll(Integer page, Integer size) {
         return personReadPort.findAll(page, size);
     }
 
