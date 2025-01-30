@@ -23,7 +23,7 @@ class PersonAdapter implements PersonReadPort {
 
     @Override
     public List<Person> findAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
         List<PersonEntity> personEntities = personRepository.findAll(pageable).getContent();
         return personEntityToDomainMapper.map(personEntities);
     }
