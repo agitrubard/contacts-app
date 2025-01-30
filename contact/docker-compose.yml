@@ -1,0 +1,17 @@
+services:
+  contact-service-database:
+    container_name: contact-service-database
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: contacts_app
+      POSTGRES_USER: contacts_app
+      POSTGRES_PASSWORD: contacts_app_pass
+      POSTGRES_ROOT_PASSWORD: contacts_app_pass
+      POSTGRES_PORT: 54321
+    volumes:
+      - ./docker/postgresql:/var/lib/postgresql/data
+    ports:
+      - "54321:5432"
+    networks:
+      - contacts_app_network
