@@ -68,6 +68,24 @@
         <!-- =================== -->
         <!-- common dependencies -->
         <!-- =================== -->
+
+
+        <!-- ======================= -->
+        <!-- datasource dependencies -->
+        <!-- ======================= -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <!-- ======================= -->
+        <!-- datasource dependencies -->
+        <!-- ======================= -->
     </dependencies>
 
     <dependencyManagement>
@@ -120,6 +138,10 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
