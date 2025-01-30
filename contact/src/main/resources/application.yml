@@ -1,2 +1,9 @@
 server:
   port: 10001
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_IP:localhost}:${DB_PORT:54321}/contacts_app
+    username: ${DB_USERNAME:contacts_app}
+    password: ${DB_PASSWORD:contacts_app_pass}
+    driver-class-name: org.postgresql.Driver
