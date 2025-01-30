@@ -7,3 +7,9 @@ spring:
     username: ${DB_USERNAME:contacts_app}
     password: ${DB_PASSWORD:contacts_app_pass}
     driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: true
+    changeLog: "classpath:db/changelog/db.changelog-master.yaml"
+    database-change-log-table: LIQUIBASE_CHANGE_LOG
+    database-change-log-lock-table: LIQUIBASE_CHANGE_LOG_LOCK
+    drop-first: ${LIQUIBASE_ENABLE_DROP_FIRST:false}
