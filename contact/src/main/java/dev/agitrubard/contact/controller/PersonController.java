@@ -27,11 +27,11 @@ class PersonController {
 
 
     @GetMapping
-    CustomSuccessResponse<List<PersonListResponse>> findAll(@Valid CustomPageRequest pageable) {
+    CustomSuccessResponse<List<PersonListResponse>> findAll(@Valid CustomPageRequest pageRequest) {
 
         List<Person> people = personService.findAll(
-                pageable.getPage(),
-                pageable.getPageSize()
+                pageRequest.getPage(),
+                pageRequest.getPageSize()
         );
 
         return CustomSuccessResponse.success(
