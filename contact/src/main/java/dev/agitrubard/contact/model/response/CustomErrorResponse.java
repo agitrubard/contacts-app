@@ -1,4 +1,4 @@
-package dev.agitrubard.contact.exception.handler;
+package dev.agitrubard.contact.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class CustomErrorResponse {
+public final class CustomErrorResponse {
 
     @Builder.Default
     private final LocalDateTime time = LocalDateTime.now();

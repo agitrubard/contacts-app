@@ -2,6 +2,7 @@ package dev.agitrubard.contact.exception.handler;
 
 import dev.agitrubard.contact.exception.AbstractNotFoundException;
 import dev.agitrubard.contact.exception.AbstractProcessException;
+import dev.agitrubard.contact.model.response.CustomErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
