@@ -1,11 +1,12 @@
 package dev.agitrubard.contact.controller;
 
-import dev.agitrubard.contact.model.response.CustomSuccessResponse;
 import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.mapper.PersonToListResponseMapper;
 import dev.agitrubard.contact.model.request.CustomPageRequest;
+import dev.agitrubard.contact.model.response.CustomSuccessResponse;
 import dev.agitrubard.contact.model.response.PersonListResponse;
 import dev.agitrubard.contact.service.PersonService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ class PersonController {
 
 
     @GetMapping
-    CustomSuccessResponse<List<PersonListResponse>> findAll(CustomPageRequest pageable) {
+    CustomSuccessResponse<List<PersonListResponse>> findAll(@Valid CustomPageRequest pageable) {
 
         List<Person> people = personService.findAll(
                 pageable.getPage(),
