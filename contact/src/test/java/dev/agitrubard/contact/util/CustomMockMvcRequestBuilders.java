@@ -18,6 +18,10 @@ public class CustomMockMvcRequestBuilders {
         return mockHttpServletRequestBuilder;
     }
 
+    public MockHttpServletRequestBuilder get(String endpoint) {
+        return MockMvcRequestBuilders.get(endpoint);
+    }
+
     public MockHttpServletRequestBuilder post(String endpoint, Object requestBody) {
         return MockMvcRequestBuilders.post(endpoint)
                 .content(CustomJsonUtil.toJson(requestBody))
