@@ -227,5 +227,30 @@ class PersonControllerTest extends AbstractRestControllerTest {
                 .findById(Mockito.any());
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "1",
+            "abc",
+            "not-a-uuid",
+            "g1234567-89ab-cdef-0123-456789abcdef",
+            "ffffffff-ffff-ffff-ffff-fffffffffffff"
+    })
+    void givenId_whenIdDoesNotValid_thenReturnValidationError(String mockId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH + "/" + mockId;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .get(endpoint);
+
+        CustomErrorResponse mockErrorResponse = CustomErrorResponseBuilder.VALIDATION_ERROR;
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isBadRequest());
+
+        // Verify
+        Mockito.verify(personService, Mockito.never())
+                .findById(Mockito.any());
+    }
 
 }
