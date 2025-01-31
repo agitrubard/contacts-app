@@ -16,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 class PersonAdapterTest extends AbstractUnitTest {
 
@@ -74,6 +76,50 @@ class PersonAdapterTest extends AbstractUnitTest {
         // Verify
         Mockito.verify(personRepository, Mockito.times(1))
                 .findAll(mockPageable);
+    }
+
+
+    @Test
+    void givenValidId_whenPersonFound_thenReturnPerson() {
+
+        // Given
+        UUID mockId = UUID.fromString("2d2ca373-911c-4fec-9912-44dd171ba1c5");
+
+        // When
+        PersonEntity mockPersonEntity = new PersonEntityBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(personRepository.findById(mockId))
+                .thenReturn(Optional.of(mockPersonEntity));
+
+        // Then
+        Optional<Person> person = personAdapter.findById(mockId);
+
+        Assertions.assertTrue(person.isPresent());
+
+        // Verify
+        Mockito.verify(personRepository, Mockito.times(1))
+                .findById(mockId);
+    }
+
+    @Test
+    void givenValidId_whenPersonNotFound_thenReturnEmpty() {
+
+        // Given
+        UUID mockId = UUID.fromString("b802ee45-6768-481d-b252-ed80bd829c7f");
+
+        // When
+        Mockito.when(personRepository.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Optional<Person> person = personAdapter.findById(mockId);
+
+        Assertions.assertTrue(person.isEmpty());
+
+        // Verify
+        Mockito.verify(personRepository, Mockito.times(1))
+                .findById(mockId);
     }
 
 }
