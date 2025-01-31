@@ -1,7 +1,6 @@
 package dev.agitrubard.contact.exception.handler;
 
 import dev.agitrubard.contact.exception.AbstractNotFoundException;
-import dev.agitrubard.contact.exception.AbstractProcessException;
 import dev.agitrubard.contact.model.response.CustomErrorResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -68,24 +67,12 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(AbstractNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    CustomErrorResponse handleNotExistError(final AbstractNotFoundException exception) {
+    CustomErrorResponse handleNotFoundError(final AbstractNotFoundException exception) {
 
         log.error(exception.getMessage(), exception);
 
         return CustomErrorResponse.builder()
                 .header(CustomErrorResponse.Header.NOT_FOUND_ERROR.getName())
-                .message(exception.getMessage())
-                .build();
-    }
-
-    @ExceptionHandler(AbstractProcessException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    CustomErrorResponse handleProcessError(final AbstractProcessException exception) {
-
-        log.error(exception.getMessage(), exception);
-
-        return CustomErrorResponse.builder()
-                .header(CustomErrorResponse.Header.PROCESS_ERROR.getName())
                 .message(exception.getMessage())
                 .build();
     }
