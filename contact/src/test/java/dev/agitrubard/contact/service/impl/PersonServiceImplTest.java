@@ -4,6 +4,8 @@ import dev.agitrubard.contact.AbstractUnitTest;
 import dev.agitrubard.contact.exception.PersonNotFoundException;
 import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.PersonBuilder;
+import dev.agitrubard.contact.model.request.PersonCreateRequest;
+import dev.agitrubard.contact.model.request.PersonCreateRequestBuilder;
 import dev.agitrubard.contact.port.PersonReadPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -114,6 +116,27 @@ class PersonServiceImplTest extends AbstractUnitTest {
         // Verify
         Mockito.verify(personReadPort, Mockito.times(1))
                 .findById(Mockito.any());
+    }
+
+
+    @Test
+    void givenValidPersonCreateRequest_whenPersonCreated_thenDoNothing() {
+
+        // Given
+        PersonCreateRequest mockCreateRequest = new PersonCreateRequestBuilder()
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(personReadPort)
+                .save(Mockito.any(Person.class));
+
+        // Then
+        personService.create(mockCreateRequest);
+
+        // Verify
+        Mockito.verify(personReadPort, Mockito.times(1))
+                .save(Mockito.any(Person.class));
     }
 
 }

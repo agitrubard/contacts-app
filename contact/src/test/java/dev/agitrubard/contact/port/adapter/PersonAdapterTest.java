@@ -2,8 +2,10 @@ package dev.agitrubard.contact.port.adapter;
 
 import dev.agitrubard.contact.AbstractUnitTest;
 import dev.agitrubard.contact.model.Person;
+import dev.agitrubard.contact.model.PersonBuilder;
 import dev.agitrubard.contact.model.entity.PersonEntity;
 import dev.agitrubard.contact.model.entity.PersonEntityBuilder;
+import dev.agitrubard.contact.model.mapper.PersonToEntityMapper;
 import dev.agitrubard.contact.repository.PersonRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,9 @@ class PersonAdapterTest extends AbstractUnitTest {
 
     @Mock
     PersonRepository personRepository;
+
+
+    private final PersonToEntityMapper personToEntityMapper = PersonToEntityMapper.INSTANCE;
 
 
     @Test
@@ -120,6 +125,29 @@ class PersonAdapterTest extends AbstractUnitTest {
         // Verify
         Mockito.verify(personRepository, Mockito.times(1))
                 .findById(mockId);
+    }
+
+
+    @Test
+    void givenValidPerson_whenPersonSaved_thenDoNothing() {
+
+        // Given
+        Person mockPerson = new PersonBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        PersonEntity mockPersonEntity = personToEntityMapper.map(mockPerson);
+
+        Mockito.when(personRepository.save(Mockito.any(PersonEntity.class)))
+                .thenReturn(mockPersonEntity);
+
+        // Then
+        personAdapter.save(mockPerson);
+
+        // Verify
+        Mockito.verify(personRepository, Mockito.times(1))
+                .save(Mockito.any(PersonEntity.class));
     }
 
 }
