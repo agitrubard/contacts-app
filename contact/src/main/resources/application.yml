@@ -7,6 +7,13 @@ spring:
     username: ${DB_USERNAME:contacts_app}
     password: ${DB_PASSWORD:contacts_app_pass}
     driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   liquibase:
     enabled: true
     changeLog: "classpath:db/changelog/db.changelog-master.yaml"
