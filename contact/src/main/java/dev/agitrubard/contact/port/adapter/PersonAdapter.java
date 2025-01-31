@@ -3,6 +3,7 @@ package dev.agitrubard.contact.port.adapter;
 import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.entity.PersonEntity;
 import dev.agitrubard.contact.model.mapper.PersonEntityToDomainMapper;
+import dev.agitrubard.contact.model.mapper.PersonToEntityMapper;
 import dev.agitrubard.contact.port.PersonReadPort;
 import dev.agitrubard.contact.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ class PersonAdapter implements PersonReadPort {
     private final PersonRepository personRepository;
 
     private final PersonEntityToDomainMapper personEntityToDomainMapper = PersonEntityToDomainMapper.INSTANCE;
+    private final PersonToEntityMapper personToEntityMapper = PersonToEntityMapper.INSTANCE;
 
 
     @Override
@@ -34,6 +36,12 @@ class PersonAdapter implements PersonReadPort {
     public Optional<Person> findById(UUID id) {
         return personRepository.findById(id)
                 .map(personEntityToDomainMapper::map);
+    }
+
+    @Override
+    public void save(Person person) {
+        PersonEntity personEntity = personToEntityMapper.map(person);
+        personRepository.save(personEntity);
     }
 
 }
