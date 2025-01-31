@@ -18,7 +18,7 @@ public final class PersonResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    List<Contact> contacts;
+    private List<Contact> contacts;
 
     @Getter
     @Setter
