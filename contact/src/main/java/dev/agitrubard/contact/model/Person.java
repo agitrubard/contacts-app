@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -17,5 +18,7 @@ public class Person extends AbstractDomainModel {
     private String firstName;
     private String lastName;
     private String company;
+
+    private List<PersonContact> contacts;
 
 }
