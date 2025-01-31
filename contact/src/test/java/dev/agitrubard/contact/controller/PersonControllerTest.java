@@ -150,10 +150,6 @@ class PersonControllerTest extends AbstractRestControllerTest {
                 .withPageSize(mockPageSize)
                 .build();
 
-        // When
-        Mockito.when(personService.findAll(Mockito.anyInt(), Mockito.anyInt()))
-                .thenReturn(List.of());
-
         // Then
         String endpoint = BASE_PATH;
         Map<String, String> parameters = Map.of(
@@ -230,5 +226,6 @@ class PersonControllerTest extends AbstractRestControllerTest {
         Mockito.verify(personService, Mockito.times(1))
                 .findById(Mockito.any());
     }
+
 
 }
