@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 class PersonControllerTest extends AbstractRestControllerTest {
 
@@ -171,6 +172,63 @@ class PersonControllerTest extends AbstractRestControllerTest {
         // Verify
         Mockito.verify(personService, Mockito.never())
                 .findAll(Mockito.anyInt(), Mockito.anyInt());
+    }
+
+
+    @Test
+    void givenValidId_whenPersonFound_thenReturnPersonResponse() throws Exception {
+
+        // Given
+        UUID mockId = UUID.fromString("4fa4e388-fd5f-461d-8728-412cf6431d82");
+
+        // When
+        Person mockPerson = new PersonBuilder()
+                .withValidValues()
+                .build();
+
+        Mockito.when(personService.findById(mockId))
+                .thenReturn(mockPerson);
+
+        // Then
+        String endpoint = BASE_PATH + "/" + mockId;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .get(endpoint);
+
+        CustomSuccessResponse<Person> mockResponse = CustomSuccessResponseBuilder.success();
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(CustomMockResultMatchersBuilders.content()
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("id")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("firstName")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("lastName")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("company")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("createdAt")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("updatedAt")
+                        .doesNotExist())
+                .andExpect(CustomMockResultMatchersBuilders.content("contacts")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("contacts[*].id")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("contacts[*].emailAddress")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("contacts[*].phoneNumber")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("contacts[*].city")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("contacts[*].district")
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(personService, Mockito.times(1))
+                .findById(Mockito.any());
     }
 
 }
