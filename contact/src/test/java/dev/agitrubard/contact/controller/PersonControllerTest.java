@@ -5,6 +5,8 @@ import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.PersonBuilder;
 import dev.agitrubard.contact.model.request.CustomPageRequest;
 import dev.agitrubard.contact.model.request.CustomPageRequestBuilder;
+import dev.agitrubard.contact.model.request.PersonCreateRequest;
+import dev.agitrubard.contact.model.request.PersonCreateRequestBuilder;
 import dev.agitrubard.contact.model.response.CustomErrorResponse;
 import dev.agitrubard.contact.model.response.CustomErrorResponseBuilder;
 import dev.agitrubard.contact.model.response.CustomSuccessResponse;
@@ -16,6 +18,8 @@ import dev.agitrubard.contact.util.CustomMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -251,6 +255,128 @@ class PersonControllerTest extends AbstractRestControllerTest {
         // Verify
         Mockito.verify(personService, Mockito.never())
                 .findById(Mockito.any());
+    }
+
+
+    @Test
+    void givenValidPersonCreateRequest_whenPersonCreated_thenReturnSuccess() throws Exception {
+
+        // Given
+        PersonCreateRequest mockCreateRequest = new PersonCreateRequestBuilder()
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(personService)
+                .create(Mockito.any(PersonCreateRequest.class));
+
+        // Then
+        String endpoint = BASE_PATH;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .post(endpoint, mockCreateRequest);
+
+        CustomSuccessResponse<Void> mockResponse = CustomSuccessResponseBuilder.success();
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(CustomMockResultMatchersBuilders.content()
+                        .doesNotHaveJsonPath());
+
+        // Verify
+        Mockito.verify(personService, Mockito.times(1))
+                .create(Mockito.any(PersonCreateRequest.class));
+    }
+
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {
+            " ",
+            "a",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    })
+    void givenPersonCreateRequest_whenFirstNameDoesNotValid_thenReturnValidationError(String mockFirstName) throws Exception {
+
+        // Given
+        PersonCreateRequest mockCreateRequest = new PersonCreateRequestBuilder()
+                .withFirstName(mockFirstName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .post(endpoint, mockCreateRequest);
+
+        CustomErrorResponse mockErrorResponse = CustomErrorResponseBuilder.VALIDATION_ERROR;
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isBadRequest());
+
+        // Verify
+        Mockito.verify(personService, Mockito.never())
+                .create(Mockito.any(PersonCreateRequest.class));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {
+            " ",
+            "a",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    })
+    void givenPersonCreateRequest_whenLastNameDoesNotValid_thenReturnValidationError(String mockLastName) throws Exception {
+
+        // Given
+        PersonCreateRequest mockCreateRequest = new PersonCreateRequestBuilder()
+                .withLastName(mockLastName)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .post(endpoint, mockCreateRequest);
+
+        CustomErrorResponse mockErrorResponse = CustomErrorResponseBuilder.VALIDATION_ERROR;
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isBadRequest());
+
+        // Verify
+        Mockito.verify(personService, Mockito.never())
+                .create(Mockito.any(PersonCreateRequest.class));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {
+            " ",
+            "a",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    })
+    void givenPersonCreateRequest_whenCompanyDoesNotValid_thenReturnValidationError(String mockCompany) throws Exception {
+
+        // Given
+        PersonCreateRequest mockCreateRequest = new PersonCreateRequestBuilder()
+                .withCompany(mockCompany)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .post(endpoint, mockCreateRequest);
+
+        CustomErrorResponse mockErrorResponse = CustomErrorResponseBuilder.VALIDATION_ERROR;
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isBadRequest());
+
+        // Verify
+        Mockito.verify(personService, Mockito.never())
+                .create(Mockito.any(PersonCreateRequest.class));
     }
 
 }
