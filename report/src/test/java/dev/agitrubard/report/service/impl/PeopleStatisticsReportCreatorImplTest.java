@@ -1,9 +1,9 @@
 package dev.agitrubard.report.service.impl;
 
+import dev.agitrubard.AbstractUnitTest;
 import dev.agitrubard.contact.model.PersonStatistic;
 import dev.agitrubard.contact.model.PersonStatisticBuilder;
 import dev.agitrubard.contact.port.PersonStatisticReadPort;
-import dev.agitrubard.report.AbstractUnitTest;
 import dev.agitrubard.report.model.enums.ReportType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

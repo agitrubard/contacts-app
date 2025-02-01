@@ -1,6 +1,6 @@
 package dev.agitrubard.report.port.adapter;
 
-import dev.agitrubard.report.AbstractUnitTest;
+import dev.agitrubard.AbstractUnitTest;
 import dev.agitrubard.report.model.Report;
 import dev.agitrubard.report.model.ReportBuilder;
 import dev.agitrubard.report.model.entity.ReportEntity;

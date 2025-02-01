@@ -1,6 +1,6 @@
 package dev.agitrubard.report.service.impl;
 
-import dev.agitrubard.report.AbstractUnitTest;
+import dev.agitrubard.AbstractUnitTest;
 import dev.agitrubard.report.exception.ReportNotFoundException;
 import dev.agitrubard.report.exception.ReportTypeNotImplementedException;
 import dev.agitrubard.report.model.Report;
