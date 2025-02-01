@@ -39,17 +39,16 @@ class ReportServiceImpl implements ReportService {
     @Override
     public void create(ReportType type) {
 
+        Report reportToBeSave = Report.pending(type);
+        Report report = reportSavePort.save(reportToBeSave);
+
         String data = reportCreators.stream()
                 .filter(creator -> type == creator.getType())
                 .findFirst()
                 .orElseThrow(() -> new ReportTypeNotImplementedException(type))
                 .create();
 
-        Report report = Report.builder()
-                .type(type)
-                .data(data)
-                .build();
-
+        report.complete(data);
         reportSavePort.save(report);
     }
 

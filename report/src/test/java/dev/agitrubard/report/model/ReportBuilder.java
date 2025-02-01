@@ -1,5 +1,7 @@
 package dev.agitrubard.report.model;
 
+import dev.agitrubard.report.model.enums.ReportType;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,6 +25,11 @@ public class ReportBuilder extends TestDataBuilder<Report> {
 
     public ReportBuilder withoutId() {
         data.setId(null);
+        return this;
+    }
+
+    public ReportBuilder withType(ReportType type) {
+        this.data.setType(type);
         return this;
     }
 

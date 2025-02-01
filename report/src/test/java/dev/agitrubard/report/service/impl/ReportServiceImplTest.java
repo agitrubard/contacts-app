@@ -172,9 +172,13 @@ class ReportServiceImplTest extends AbstractUnitTest {
         Mockito.when(peopleStatisticsReportCreatorImpl.create())
                 .thenReturn(mockData);
 
-        Mockito.doNothing()
-                .when(reportSavePort)
-                .save(Mockito.any(Report.class));
+        Report mockReport = new ReportBuilder()
+                .withValidValues()
+                .withType(mockType)
+                .withData(mockData)
+                .build();
+        Mockito.when(reportSavePort.save(Mockito.any(Report.class)))
+                .thenReturn(mockReport);
 
         // Then
         reportService.create(mockType);
@@ -186,7 +190,7 @@ class ReportServiceImplTest extends AbstractUnitTest {
         Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.times(1))
                 .create();
 
-        Mockito.verify(reportSavePort, Mockito.times(1))
+        Mockito.verify(reportSavePort, Mockito.times(2))
                 .save(Mockito.any(Report.class));
     }
 
@@ -213,7 +217,7 @@ class ReportServiceImplTest extends AbstractUnitTest {
         Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.never())
                 .create();
 
-        Mockito.verify(reportSavePort, Mockito.never())
+        Mockito.verify(reportSavePort, Mockito.times(1))
                 .save(Mockito.any(Report.class));
     }
 
