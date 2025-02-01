@@ -1,6 +1,11 @@
 server:
   port: 10001
 
+logging:
+  level:
+    web: debug
+    sql: debug
+
 spring:
   datasource:
     url: jdbc:postgresql://${DB_IP:localhost}:${DB_PORT:54321}/contacts_app
