@@ -8,4 +8,6 @@ public interface PersonContactService {
 
     void add(UUID personId, PersonContactAddRequest addRequest);
 
+    void delete(UUID id);
+
 }
