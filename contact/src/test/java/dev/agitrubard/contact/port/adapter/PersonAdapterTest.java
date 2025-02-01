@@ -93,6 +93,7 @@ class PersonAdapterTest extends AbstractUnitTest {
         // When
         PersonEntity mockPersonEntity = new PersonEntityBuilder()
                 .withValidValues()
+                .withId(mockId)
                 .build();
         Mockito.when(personRepository.findById(mockId))
                 .thenReturn(Optional.of(mockPersonEntity));
@@ -134,6 +135,7 @@ class PersonAdapterTest extends AbstractUnitTest {
         // Given
         Person mockPerson = new PersonBuilder()
                 .withValidValues()
+                .withoutId()
                 .build();
 
         // When

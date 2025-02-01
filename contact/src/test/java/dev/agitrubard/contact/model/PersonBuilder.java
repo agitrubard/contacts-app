@@ -20,6 +20,11 @@ public class PersonBuilder extends TestDataBuilder<Person> {
         return this;
     }
 
+    public PersonBuilder withoutId() {
+        data.setId(null);
+        return this;
+    }
+
     public PersonBuilder withoutContacts() {
         data.setContacts(new ArrayList<>());
         return this;
