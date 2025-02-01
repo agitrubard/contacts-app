@@ -379,4 +379,60 @@ class PersonControllerTest extends AbstractRestControllerTest {
                 .create(Mockito.any(PersonCreateRequest.class));
     }
 
+
+    @Test
+    void givenValidId_whenPersonDeleted_thenReturnSuccess() throws Exception {
+
+        // Given
+        UUID mockId = UUID.fromString("4f08ef84-45a8-47a6-8c38-54b378465365");
+
+        // When
+        Mockito.doNothing()
+                .when(personService)
+                .delete(mockId);
+
+        // Then
+        String endpoint = BASE_PATH + "/" + mockId;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .delete(endpoint);
+
+        CustomSuccessResponse<Person> mockResponse = CustomSuccessResponseBuilder.success();
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(CustomMockResultMatchersBuilders.content()
+                        .doesNotHaveJsonPath());
+
+        // Verify
+        Mockito.verify(personService, Mockito.times(1))
+                .delete(Mockito.any(UUID.class));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1",
+            "abc",
+            "not-a-uuid",
+            "g1234567-89ab-cdef-0123-456789abcdef",
+            "ffffffff-ffff-ffff-ffff-fffffffffffff"
+    })
+    void givenIdForDeleting_whenIdDoesNotValid_thenReturnValidationError(String mockId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH + "/" + mockId;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .delete(endpoint);
+
+        CustomErrorResponse mockErrorResponse = CustomErrorResponseBuilder.VALIDATION_ERROR;
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isBadRequest());
+
+        // Verify
+        Mockito.verify(personService, Mockito.never())
+                .delete(Mockito.any(UUID.class));
+    }
+
 }
