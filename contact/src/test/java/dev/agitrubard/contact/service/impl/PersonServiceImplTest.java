@@ -6,6 +6,7 @@ import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.PersonBuilder;
 import dev.agitrubard.contact.model.request.PersonCreateRequest;
 import dev.agitrubard.contact.model.request.PersonCreateRequestBuilder;
+import dev.agitrubard.contact.port.PersonDeletePort;
 import dev.agitrubard.contact.port.PersonReadPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,9 @@ class PersonServiceImplTest extends AbstractUnitTest {
 
     @Mock
     PersonReadPort personReadPort;
+
+    @Mock
+    PersonDeletePort personDeletePort;
 
 
     @Test
@@ -154,7 +158,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
                 .thenReturn(Optional.of(mockPerson));
 
         Mockito.doNothing()
-                .when(personReadPort)
+                .when(personDeletePort)
                 .delete(Mockito.any(UUID.class));
 
         // Then
@@ -164,7 +168,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
         Mockito.verify(personReadPort, Mockito.times(1))
                 .findById(Mockito.any(UUID.class));
 
-        Mockito.verify(personReadPort, Mockito.times(1))
+        Mockito.verify(personDeletePort, Mockito.times(1))
                 .delete(Mockito.any(UUID.class));
     }
 
@@ -188,7 +192,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
         Mockito.verify(personReadPort, Mockito.times(1))
                 .findById(Mockito.any(UUID.class));
 
-        Mockito.verify(personReadPort, Mockito.never())
+        Mockito.verify(personDeletePort, Mockito.never())
                 .delete(Mockito.any(UUID.class));
     }
 

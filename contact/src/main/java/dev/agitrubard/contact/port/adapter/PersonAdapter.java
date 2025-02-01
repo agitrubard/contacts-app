@@ -4,6 +4,7 @@ import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.entity.PersonEntity;
 import dev.agitrubard.contact.model.mapper.PersonEntityToDomainMapper;
 import dev.agitrubard.contact.model.mapper.PersonToEntityMapper;
+import dev.agitrubard.contact.port.PersonDeletePort;
 import dev.agitrubard.contact.port.PersonReadPort;
 import dev.agitrubard.contact.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-class PersonAdapter implements PersonReadPort {
+class PersonAdapter implements PersonReadPort, PersonDeletePort {
 
     private final PersonRepository personRepository;
 

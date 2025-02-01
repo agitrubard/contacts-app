@@ -4,6 +4,7 @@ import dev.agitrubard.contact.exception.PersonNotFoundException;
 import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.mapper.PersonCreateRequestToDomainMapper;
 import dev.agitrubard.contact.model.request.PersonCreateRequest;
+import dev.agitrubard.contact.port.PersonDeletePort;
 import dev.agitrubard.contact.port.PersonReadPort;
 import dev.agitrubard.contact.service.PersonService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.UUID;
 class PersonServiceImpl implements PersonService {
 
     private final PersonReadPort personReadPort;
+    private final PersonDeletePort personDeletePort;
 
 
     private final PersonCreateRequestToDomainMapper personCreateRequestToDomainMapper = PersonCreateRequestToDomainMapper.INSTANCE;
@@ -44,7 +46,7 @@ class PersonServiceImpl implements PersonService {
         personReadPort.findById(id)
                 .orElseThrow(() -> new PersonNotFoundException(id));
 
-        personReadPort.delete(id);
+        personDeletePort.delete(id);
     }
 
 }

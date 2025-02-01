@@ -14,6 +14,4 @@ public interface PersonReadPort {
 
     void save(Person person);
 
-    void delete(UUID id);
-
 }
