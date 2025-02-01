@@ -396,7 +396,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
                 .delete(endpoint);
 
-        CustomSuccessResponse<Person> mockResponse = CustomSuccessResponseBuilder.success();
+        CustomSuccessResponse<Void> mockResponse = CustomSuccessResponseBuilder.success();
 
         customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(CustomMockResultMatchersBuilders.status()
