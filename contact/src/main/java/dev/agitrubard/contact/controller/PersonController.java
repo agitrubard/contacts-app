@@ -12,6 +12,7 @@ import dev.agitrubard.contact.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,6 +64,15 @@ class PersonController {
     CustomSuccessResponse<Void> create(@RequestBody @Valid PersonCreateRequest createRequest) {
 
         personService.create(createRequest);
+
+        return CustomSuccessResponse.success();
+    }
+
+
+    @DeleteMapping("/{id}")
+    CustomSuccessResponse<Void> delete(@PathVariable UUID id) {
+
+        personService.delete(id);
 
         return CustomSuccessResponse.success();
     }
