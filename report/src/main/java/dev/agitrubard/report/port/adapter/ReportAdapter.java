@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +28,13 @@ class ReportAdapter implements ReportReadPort {
         Pageable pageable = PageRequest.of(page - 1, pageSize);
         List<ReportEntity> reportEntities = reportRepository.findAll(pageable).getContent();
         return reportEntityToDomainMapper.map(reportEntities);
+    }
+
+
+    @Override
+    public Optional<Report> findById(UUID id) {
+        return reportRepository.findById(id)
+                .map(reportEntityToDomainMapper::map);
     }
 
 }
