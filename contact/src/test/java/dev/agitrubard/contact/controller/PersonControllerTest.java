@@ -184,8 +184,8 @@ class PersonControllerTest extends AbstractRestControllerTest {
         // When
         Person mockPerson = new PersonBuilder()
                 .withValidValues()
+                .withId(mockId)
                 .build();
-
         Mockito.when(personService.findById(mockId))
                 .thenReturn(mockPerson);
 
