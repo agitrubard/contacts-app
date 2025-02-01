@@ -39,7 +39,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="person_id" type="uuid">
-                <constraints nullable="true"
+                <constraints nullable="false"
                              foreignKeyName="fk__ca_person_contact__person_id"
                              referencedTableName="ca_person"
                              referencedColumnNames="id"
