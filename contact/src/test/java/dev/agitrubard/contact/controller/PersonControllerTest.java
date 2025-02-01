@@ -184,8 +184,8 @@ class PersonControllerTest extends AbstractRestControllerTest {
         // When
         Person mockPerson = new PersonBuilder()
                 .withValidValues()
+                .withId(mockId)
                 .build();
-
         Mockito.when(personService.findById(mockId))
                 .thenReturn(mockPerson);
 
@@ -232,7 +232,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
+    @ValueSource(strings = {
             "1",
             "abc",
             "not-a-uuid",
@@ -396,7 +396,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
                 .delete(endpoint);
 
-        CustomSuccessResponse<Person> mockResponse = CustomSuccessResponseBuilder.success();
+        CustomSuccessResponse<Void> mockResponse = CustomSuccessResponseBuilder.success();
 
         customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(CustomMockResultMatchersBuilders.status()
@@ -410,7 +410,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
+    @ValueSource(strings = {
             "1",
             "abc",
             "not-a-uuid",

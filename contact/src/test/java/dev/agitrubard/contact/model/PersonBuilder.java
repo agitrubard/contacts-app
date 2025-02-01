@@ -1,6 +1,8 @@
 package dev.agitrubard.contact.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.UUID;
 
 public class PersonBuilder extends TestDataBuilder<Person> {
 
@@ -11,6 +13,16 @@ public class PersonBuilder extends TestDataBuilder<Person> {
     public PersonBuilder withValidValues() {
         return this
                 .withCreatedAtNow();
+    }
+
+    public PersonBuilder withId(UUID id) {
+        data.setId(id);
+        return this;
+    }
+
+    public PersonBuilder withoutContacts() {
+        data.setContacts(new ArrayList<>());
+        return this;
     }
 
     private PersonBuilder withCreatedAtNow() {

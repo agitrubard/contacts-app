@@ -91,6 +91,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
         // When
         Person mockPerson = new PersonBuilder()
                 .withValidValues()
+                .withId(mockId)
                 .build();
         Mockito.when(personReadPort.findById(Mockito.any(UUID.class)))
                 .thenReturn(Optional.of(mockPerson));
@@ -157,6 +158,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
         // When
         Person mockPerson = new PersonBuilder()
                 .withValidValues()
+                .withId(mockId)
                 .build();
         Mockito.when(personReadPort.findById(Mockito.any(UUID.class)))
                 .thenReturn(Optional.of(mockPerson));
