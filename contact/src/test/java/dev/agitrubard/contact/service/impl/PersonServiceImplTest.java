@@ -139,4 +139,57 @@ class PersonServiceImplTest extends AbstractUnitTest {
                 .save(Mockito.any(Person.class));
     }
 
+
+    @Test
+    void givenValidId_whenPersonFound_thenDeletePerson() {
+
+        // Given
+        UUID mockId = UUID.fromString("9856ca0f-fde3-4b87-9184-17a6ff55a9d0");
+
+        // When
+        Person mockPerson = new PersonBuilder()
+                .withValidValues()
+                .build();
+        Mockito.when(personReadPort.findById(Mockito.any()))
+                .thenReturn(Optional.of(mockPerson));
+
+        Mockito.doNothing()
+                .when(personReadPort)
+                .delete(Mockito.any(UUID.class));
+
+        // Then
+        personService.delete(mockId);
+
+        // Verify
+        Mockito.verify(personReadPort, Mockito.times(1))
+                .findById(Mockito.any(UUID.class));
+
+        Mockito.verify(personReadPort, Mockito.times(1))
+                .delete(Mockito.any(UUID.class));
+    }
+
+    @Test
+    void givenValidIdForDeleting_whenPersonNotFound_thenThrowPersonNotFoundException() {
+
+        // Given
+        UUID mockId = UUID.fromString("fdf209ce-b541-4da7-897b-d525ac23ccfa");
+
+        // When
+        Mockito.when(personReadPort.findById(Mockito.any()))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Assertions.assertThrows(
+                PersonNotFoundException.class,
+                () -> personService.findById(mockId)
+        );
+
+        // Verify
+        Mockito.verify(personReadPort, Mockito.times(1))
+                .findById(Mockito.any(UUID.class));
+
+        Mockito.verify(personReadPort, Mockito.never())
+                .delete(Mockito.any(UUID.class));
+    }
+
 }
