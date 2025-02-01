@@ -6,7 +6,7 @@ import java.util.UUID;
 public final class PersonContactNotFoundException extends AbstractNotFoundException {
 
     @Serial
-    private static final long serialVersionUID = 6892277577266128944L;
+    private static final long serialVersionUID = 4969686449357124687L;
 
     public PersonContactNotFoundException(UUID id) {
         super("Person contact not found with id: " + id);
