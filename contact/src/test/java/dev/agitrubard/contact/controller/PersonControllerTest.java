@@ -228,7 +228,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(personService, Mockito.times(1))
-                .findById(Mockito.any());
+                .findById(Mockito.any(UUID.class));
     }
 
     @ParameterizedTest
@@ -254,7 +254,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(personService, Mockito.never())
-                .findById(Mockito.any());
+                .findById(Mockito.any(UUID.class));
     }
 
 
