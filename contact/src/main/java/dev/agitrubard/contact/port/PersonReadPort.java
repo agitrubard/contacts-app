@@ -12,4 +12,6 @@ public interface PersonReadPort {
 
     Optional<Person> findById(UUID id);
 
+    Optional<Person> findByContactId(UUID id);
+
 }

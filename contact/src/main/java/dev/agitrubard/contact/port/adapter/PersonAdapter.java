@@ -43,6 +43,13 @@ class PersonAdapter implements PersonReadPort, PersonSavePort, PersonDeletePort 
 
 
     @Override
+    public Optional<Person> findByContactId(UUID contactId) {
+        return personRepository.findByContactsId(contactId)
+                .map(personEntityToDomainMapper::map);
+    }
+
+
+    @Override
     public void save(Person person) {
         PersonEntity personEntity = personToEntityMapper.map(person);
         personEntity.getContacts().forEach(personContactEntity -> personContactEntity.setPerson(personEntity));
