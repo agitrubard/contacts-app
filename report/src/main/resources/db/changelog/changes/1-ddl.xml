@@ -8,25 +8,17 @@
         <!-- ================ -->
         <!-- DDL of ca_report -->
         <!-- ================ -->
-        <sql>
-            DROP TYPE IF EXISTS report_type;
-            CREATE TYPE report_type AS ENUM ('PEOPLE_STATISTICS_BY_LOCATION');
-
-            DROP TYPE IF EXISTS report_status;
-            CREATE TYPE report_status AS ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED');
-        </sql>
-
         <createTable tableName="ca_report">
             <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="type" type="report_type">
+            <column name="type" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="report_status">
+            <column name="status" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="data" type="json"/>
+            <column name="data" type="longtext"/>
             <column name="created_at" type="timestamp(0)">
                 <constraints nullable="false"/>
             </column>
@@ -35,6 +27,14 @@
         <!-- ================ -->
         <!-- DDL of ca_report -->
         <!-- ================ -->
+
+        <sql>
+            alter table ca_report
+                add constraint c__ca_report__type check (type in ('PEOPLE_STATISTICS_BY_LOCATION'));
+
+            alter table ca_report
+                add constraint c__ca_report__status check (status in ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED'));
+        </sql>
     </changeSet>
 
 </databaseChangeLog>
