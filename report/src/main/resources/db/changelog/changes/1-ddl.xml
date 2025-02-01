@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="1-ddl" author="agitrubard">
+        <!-- ================ -->
+        <!-- DDL of ca_report -->
+        <!-- ================ -->
+        <sql>
+            CREATE TYPE report_type AS ENUM ('PEOPLE_STATISTICS_BY_LOCATION');
+            CREATE TYPE report_status AS ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED');
+        </sql>
+
+        <createTable tableName="ca_report">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="report_type">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="report_status">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data" type="jsonb"/>
+            <column name="created_at" type="timestamp(0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp(0)"/>
+        </createTable>
+        <!-- ================ -->
+        <!-- DDL of ca_report -->
+        <!-- ================ -->
+    </changeSet>
+
+</databaseChangeLog>
