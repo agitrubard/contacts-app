@@ -38,4 +38,13 @@ class PersonServiceImpl implements PersonService {
         personReadPort.save(person);
     }
 
+    @Override
+    public void delete(UUID id) {
+
+        personReadPort.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
+
+        personReadPort.delete(id);
+    }
+
 }

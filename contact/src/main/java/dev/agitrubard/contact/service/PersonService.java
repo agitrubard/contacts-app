@@ -14,4 +14,6 @@ public interface PersonService {
 
     void create(PersonCreateRequest createRequest);
 
+    void delete(UUID id);
+
 }
