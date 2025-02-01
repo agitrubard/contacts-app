@@ -1,4 +1,4 @@
-package dev.agitrubard.report;
+package dev.agitrubard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
