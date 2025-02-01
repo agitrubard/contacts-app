@@ -1,0 +1,172 @@
+package dev.agitrubard.report.controller;
+
+import dev.agitrubard.report.AbstractRestControllerTest;
+import dev.agitrubard.report.model.Report;
+import dev.agitrubard.report.model.ReportBuilder;
+import dev.agitrubard.report.model.request.CustomPageRequest;
+import dev.agitrubard.report.model.request.CustomPageRequestBuilder;
+import dev.agitrubard.report.model.response.CustomErrorResponse;
+import dev.agitrubard.report.model.response.CustomErrorResponseBuilder;
+import dev.agitrubard.report.model.response.CustomSuccessResponse;
+import dev.agitrubard.report.model.response.CustomSuccessResponseBuilder;
+import dev.agitrubard.report.model.response.ReportListResponse;
+import dev.agitrubard.report.service.ReportService;
+import dev.agitrubard.report.util.CustomMockMvcRequestBuilders;
+import dev.agitrubard.report.util.CustomMockResultMatchersBuilders;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.Mockito;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+
+import java.util.List;
+import java.util.Map;
+
+class ReportControllerTest extends AbstractRestControllerTest {
+
+    @MockitoBean
+    ReportService reportService;
+
+
+    private static final String BASE_PATH = "/api/v1/report";
+
+    @Test
+    void givenValidCustomPageRequest_whenReportsFound_thenReturnReportListResponse() throws Exception {
+
+        // Given
+        CustomPageRequest mockPageRequest = new CustomPageRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        List<Report> mockReports = List.of(
+                new ReportBuilder().withValidValues().build(),
+                new ReportBuilder().withValidValues().build()
+        );
+
+        Mockito.when(reportService.findAll(Mockito.any(Integer.class), Mockito.any(Integer.class)))
+                .thenReturn(mockReports);
+
+        // Then
+        String endpoint = BASE_PATH;
+        Map<String, String> parameters = Map.of(
+                "page", String.valueOf(mockPageRequest.getPage()),
+                "pageSize", String.valueOf(mockPageRequest.getPageSize())
+        );
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .get(endpoint, parameters);
+
+        CustomSuccessResponse<List<ReportListResponse>> mockResponse = CustomSuccessResponseBuilder.success();
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(CustomMockResultMatchersBuilders.content()
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.contentSize()
+                        .value(mockReports.size()))
+                .andExpect(CustomMockResultMatchersBuilders.contents("id")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.contents("type")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.contents("status")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.contents("createdAt")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.contents("updatedAt")
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(reportService, Mockito.times(1))
+                .findAll(Mockito.any(Integer.class), Mockito.any(Integer.class));
+    }
+
+    @Test
+    void givenValidCustomPageRequest_whenReportsNotFound_thenReturnEmptyReportListResponse() throws Exception {
+
+        // Given
+        CustomPageRequest mockPageRequest = new CustomPageRequestBuilder()
+                .withValidValues()
+                .build();
+
+        // When
+        Mockito.when(reportService.findAll(Mockito.any(Integer.class), Mockito.any(Integer.class)))
+                .thenReturn(List.of());
+
+        // Then
+        String endpoint = BASE_PATH;
+        Map<String, String> parameters = Map.of(
+                "page", String.valueOf(mockPageRequest.getPage()),
+                "pageSize", String.valueOf(mockPageRequest.getPageSize())
+        );
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .get(endpoint, parameters);
+
+        CustomSuccessResponse<List<ReportListResponse>> mockResponse = CustomSuccessResponseBuilder.success();
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(CustomMockResultMatchersBuilders.content()
+                        .isEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.contents("id")
+                        .doesNotHaveJsonPath())
+                .andExpect(CustomMockResultMatchersBuilders.contents("type")
+                        .doesNotHaveJsonPath())
+                .andExpect(CustomMockResultMatchersBuilders.contents("status")
+                        .doesNotHaveJsonPath())
+                .andExpect(CustomMockResultMatchersBuilders.contents("createdAt")
+                        .doesNotHaveJsonPath())
+                .andExpect(CustomMockResultMatchersBuilders.contents("updatedAt")
+                        .doesNotHaveJsonPath());
+
+        // Verify
+        Mockito.verify(reportService, Mockito.times(1))
+                .findAll(Mockito.any(Integer.class), Mockito.any(Integer.class));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            " , ",
+            "1, ",
+            " , 10",
+            "0, 10",
+            "0, 0",
+            "1, 0",
+            "1, 16",
+            "1, 50",
+            "1, 101",
+            "1, 100",
+            "1, 101"
+    })
+    void givenCustomPageRequest_whenPageOrPageSizeAreEmpty_thenReturnValidationError(Integer mockPage, Integer mockPageSize) throws Exception {
+
+        // Given
+        CustomPageRequest mockPageRequest = new CustomPageRequestBuilder()
+                .withValidValues()
+                .withPage(mockPage)
+                .withPageSize(mockPageSize)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH;
+        Map<String, String> parameters = Map.of(
+                "page", String.valueOf(mockPageRequest.getPage()),
+                "pageSize", String.valueOf(mockPageRequest.getPageSize())
+        );
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .get(endpoint, parameters);
+
+        CustomErrorResponse mockErrorResponse = CustomErrorResponseBuilder.VALIDATION_ERROR;
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isBadRequest());
+
+        // Verify
+        Mockito.verify(reportService, Mockito.never())
+                .findAll(Mockito.any(Integer.class), Mockito.any(Integer.class));
+    }
+
+}

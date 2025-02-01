@@ -1,4 +1,4 @@
-package dev.agitrubard.contact.model.response;
+package dev.agitrubard.report.model.response;
 
 public class CustomErrorResponseBuilder {
 

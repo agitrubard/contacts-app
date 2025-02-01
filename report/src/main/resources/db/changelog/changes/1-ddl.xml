@@ -9,7 +9,10 @@
         <!-- DDL of ca_report -->
         <!-- ================ -->
         <sql>
+            DROP TYPE IF EXISTS report_type;
             CREATE TYPE report_type AS ENUM ('PEOPLE_STATISTICS_BY_LOCATION');
+
+            DROP TYPE IF EXISTS report_status;
             CREATE TYPE report_status AS ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'FAILED');
         </sql>
 
@@ -23,7 +26,7 @@
             <column name="status" type="report_status">
                 <constraints nullable="false"/>
             </column>
-            <column name="data" type="jsonb"/>
+            <column name="data" type="json"/>
             <column name="created_at" type="timestamp(0)">
                 <constraints nullable="false"/>
             </column>
