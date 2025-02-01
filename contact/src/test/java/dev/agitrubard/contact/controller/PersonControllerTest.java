@@ -50,7 +50,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
                 new PersonBuilder().withValidValues().build()
         );
 
-        Mockito.when(personService.findAll(Mockito.anyInt(), Mockito.anyInt()))
+        Mockito.when(personService.findAll(Mockito.any(Integer.class), Mockito.any(Integer.class)))
                 .thenReturn(mockPeople);
 
         // Then
@@ -84,7 +84,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(personService, Mockito.times(1))
-                .findAll(Mockito.anyInt(), Mockito.anyInt());
+                .findAll(Mockito.any(Integer.class), Mockito.any(Integer.class));
     }
 
     @Test
@@ -96,7 +96,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
                 .build();
 
         // When
-        Mockito.when(personService.findAll(Mockito.anyInt(), Mockito.anyInt()))
+        Mockito.when(personService.findAll(Mockito.any(Integer.class), Mockito.any(Integer.class)))
                 .thenReturn(List.of());
 
         // Then
@@ -128,7 +128,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(personService, Mockito.times(1))
-                .findAll(Mockito.anyInt(), Mockito.anyInt());
+                .findAll(Mockito.any(Integer.class), Mockito.any(Integer.class));
     }
 
     @ParameterizedTest
@@ -171,7 +171,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
 
         // Verify
         Mockito.verify(personService, Mockito.never())
-                .findAll(Mockito.anyInt(), Mockito.anyInt());
+                .findAll(Mockito.any(Integer.class), Mockito.any(Integer.class));
     }
 
 
@@ -287,7 +287,6 @@ class PersonControllerTest extends AbstractRestControllerTest {
         Mockito.verify(personService, Mockito.times(1))
                 .create(Mockito.any(PersonCreateRequest.class));
     }
-
 
     @ParameterizedTest
     @NullSource

@@ -233,4 +233,60 @@ class PersonContactControllerTest extends AbstractRestControllerTest {
                 .add(Mockito.any(UUID.class), Mockito.any(PersonContactAddRequest.class));
     }
 
+
+    @Test
+    void givenValidId_whenPersonContactDeleted_thenReturnSuccess() throws Exception {
+
+        // Given
+        UUID mockId = UUID.fromString("b79b7fa1-ea11-42db-a46e-d12159f08236");
+
+        // When
+        Mockito.doNothing()
+                .when(personContactService)
+                .delete(mockId);
+
+        // Then
+        String endpoint = BASE_PATH + "/contact" + "/" + mockId;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .delete(endpoint);
+
+        CustomSuccessResponse<Void> mockResponse = CustomSuccessResponseBuilder.success();
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(CustomMockResultMatchersBuilders.content()
+                        .doesNotHaveJsonPath());
+
+        // Verify
+        Mockito.verify(personContactService, Mockito.times(1))
+                .delete(Mockito.any(UUID.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "1",
+            "abc",
+            "not-a-uuid",
+            "g1234567-89ab-cdef-0123-456789abcdef",
+            "ffffffff-ffff-ffff-ffff-fffffffffffff"
+    })
+    void givenId_whenIdDoesNotValid_thenReturnValidationError(String mockId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH + "/contact" + "/" + mockId;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .delete(endpoint);
+
+        CustomErrorResponse mockErrorResponse = CustomErrorResponseBuilder.VALIDATION_ERROR;
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isBadRequest());
+
+        // Verify
+        Mockito.verify(personContactService, Mockito.never())
+                .delete(Mockito.any(UUID.class));
+    }
+
 }

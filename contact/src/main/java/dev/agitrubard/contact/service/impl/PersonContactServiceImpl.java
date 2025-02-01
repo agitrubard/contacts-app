@@ -1,5 +1,6 @@
 package dev.agitrubard.contact.service.impl;
 
+import dev.agitrubard.contact.exception.PersonContactNotFoundException;
 import dev.agitrubard.contact.exception.PersonNotFoundException;
 import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.PersonContact;
@@ -20,7 +21,6 @@ class PersonContactServiceImpl implements PersonContactService {
     private final PersonReadPort personReadPort;
     private final PersonSavePort personSavePort;
 
-
     private final PersonContactAddRequestToDomainMapper personContactAddRequestToDomainMapper = PersonContactAddRequestToDomainMapper.INSTANCE;
 
 
@@ -32,6 +32,17 @@ class PersonContactServiceImpl implements PersonContactService {
 
         PersonContact personContact = personContactAddRequestToDomainMapper.map(addRequest);
         person.getContacts().add(personContact);
+
+        personSavePort.save(person);
+    }
+
+    @Override
+    public void delete(UUID id) {
+
+        Person person = personReadPort.findByContactId(id)
+                .orElseThrow(() -> new PersonContactNotFoundException(id));
+
+        person.getContacts().removeIf(personContact -> personContact.getId().equals(id));
 
         personSavePort.save(person);
     }

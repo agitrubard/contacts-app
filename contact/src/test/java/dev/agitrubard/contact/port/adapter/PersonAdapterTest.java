@@ -3,6 +3,8 @@ package dev.agitrubard.contact.port.adapter;
 import dev.agitrubard.contact.AbstractUnitTest;
 import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.PersonBuilder;
+import dev.agitrubard.contact.model.entity.PersonContactEntity;
+import dev.agitrubard.contact.model.entity.PersonContactEntityBuilder;
 import dev.agitrubard.contact.model.entity.PersonEntity;
 import dev.agitrubard.contact.model.entity.PersonEntityBuilder;
 import dev.agitrubard.contact.model.mapper.PersonToEntityMapper;
@@ -93,6 +95,7 @@ class PersonAdapterTest extends AbstractUnitTest {
         // When
         PersonEntity mockPersonEntity = new PersonEntityBuilder()
                 .withValidValues()
+                .withId(mockId)
                 .build();
         Mockito.when(personRepository.findById(mockId))
                 .thenReturn(Optional.of(mockPersonEntity));
@@ -129,11 +132,63 @@ class PersonAdapterTest extends AbstractUnitTest {
 
 
     @Test
+    void givenValidContactId_whenPersonFound_thenReturnPerson() {
+
+        // Given
+        UUID mockContactId = UUID.fromString("a2815ca7-7e6e-4bcf-a3cd-c54990c961f3");
+
+        // When
+        List<PersonContactEntity> mockPersonContactEntities = List.of(
+                new PersonContactEntityBuilder()
+                        .withValidValues()
+                        .withId(mockContactId)
+                        .build()
+        );
+        PersonEntity mockPersonEntity = new PersonEntityBuilder()
+                .withValidValues()
+                .withContacts(mockPersonContactEntities)
+                .build();
+        Mockito.when(personRepository.findByContactsId(mockContactId))
+                .thenReturn(Optional.of(mockPersonEntity));
+
+        // Then
+        Optional<Person> person = personAdapter.findByContactId(mockContactId);
+
+        Assertions.assertTrue(person.isPresent());
+
+        // Verify
+        Mockito.verify(personRepository, Mockito.times(1))
+                .findByContactsId(mockContactId);
+    }
+
+    @Test
+    void givenValidContactId_whenPersonNotFound_thenReturnEmpty() {
+
+        // Given
+        UUID mockId = UUID.fromString("c433ed3e-a499-4b58-8cfb-51946f373031");
+
+        // When
+        Mockito.when(personRepository.findByContactsId(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Optional<Person> person = personAdapter.findByContactId(mockId);
+
+        Assertions.assertTrue(person.isEmpty());
+
+        // Verify
+        Mockito.verify(personRepository, Mockito.times(1))
+                .findByContactsId(mockId);
+    }
+
+
+    @Test
     void givenValidPerson_whenPersonSaved_thenDoNothing() {
 
         // Given
         Person mockPerson = new PersonBuilder()
                 .withValidValues()
+                .withoutId()
                 .build();
 
         // When

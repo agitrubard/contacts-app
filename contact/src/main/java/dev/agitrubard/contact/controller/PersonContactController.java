@@ -6,6 +6,7 @@ import dev.agitrubard.contact.service.PersonContactService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,15 @@ class PersonContactController {
                                     @RequestBody @Valid PersonContactAddRequest addRequest) {
 
         personContactService.add(personId, addRequest);
+
+        return CustomSuccessResponse.success();
+    }
+
+
+    @DeleteMapping("/contact/{id}")
+    CustomSuccessResponse<Void> delete(@PathVariable UUID id) {
+
+        personContactService.delete(id);
 
         return CustomSuccessResponse.success();
     }

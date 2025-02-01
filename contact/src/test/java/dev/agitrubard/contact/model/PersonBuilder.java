@@ -2,6 +2,7 @@ package dev.agitrubard.contact.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class PersonBuilder extends TestDataBuilder<Person> {
@@ -20,8 +21,18 @@ public class PersonBuilder extends TestDataBuilder<Person> {
         return this;
     }
 
+    public PersonBuilder withoutId() {
+        data.setId(null);
+        return this;
+    }
+
     public PersonBuilder withoutContacts() {
         data.setContacts(new ArrayList<>());
+        return this;
+    }
+
+    public PersonBuilder withContacts(List<PersonContact> contacts) {
+        data.setContacts(contacts);
         return this;
     }
 
