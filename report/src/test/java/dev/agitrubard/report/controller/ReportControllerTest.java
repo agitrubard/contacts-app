@@ -3,8 +3,11 @@ package dev.agitrubard.report.controller;
 import dev.agitrubard.report.AbstractRestControllerTest;
 import dev.agitrubard.report.model.Report;
 import dev.agitrubard.report.model.ReportBuilder;
+import dev.agitrubard.report.model.enums.ReportType;
 import dev.agitrubard.report.model.request.CustomPageRequest;
 import dev.agitrubard.report.model.request.CustomPageRequestBuilder;
+import dev.agitrubard.report.model.request.ReportCreateRequest;
+import dev.agitrubard.report.model.request.ReportCreateRequestBuilder;
 import dev.agitrubard.report.model.response.CustomErrorResponse;
 import dev.agitrubard.report.model.response.CustomErrorResponseBuilder;
 import dev.agitrubard.report.model.response.CustomSuccessResponse;
@@ -16,6 +19,7 @@ import dev.agitrubard.report.util.CustomMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -240,6 +244,62 @@ class ReportControllerTest extends AbstractRestControllerTest {
         // Verify
         Mockito.verify(reportService, Mockito.never())
                 .findById(Mockito.any(UUID.class));
+    }
+
+
+    @Test
+    void givenValidReportCreateRequest_whenReportCreated_thenReturnSuccess() throws Exception {
+
+        // Given
+        ReportCreateRequest mockCreateRequest = new ReportCreateRequestBuilder()
+                .build();
+
+        // When
+        Mockito.doNothing()
+                .when(reportService)
+                .create(Mockito.any(ReportType.class));
+
+        // Then
+        String endpoint = BASE_PATH;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .post(endpoint, mockCreateRequest);
+
+        CustomSuccessResponse<Void> mockResponse = CustomSuccessResponseBuilder.success();
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(CustomMockResultMatchersBuilders.content()
+                        .doesNotHaveJsonPath());
+
+        // Verify
+        Mockito.verify(reportService, Mockito.times(1))
+                .create(Mockito.any(ReportType.class));
+    }
+
+    @ParameterizedTest
+    @NullSource
+    void givenReportCreateRequest_whenTypeDoesNotValid_thenReturnValidationError(ReportType mockType) throws Exception {
+
+        // Given
+        ReportCreateRequest mockCreateRequest = new ReportCreateRequestBuilder()
+                .withType(mockType)
+                .build();
+
+        // Then
+        String endpoint = BASE_PATH;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .post(endpoint, mockCreateRequest);
+
+        CustomErrorResponse mockErrorResponse = CustomErrorResponseBuilder.VALIDATION_ERROR;
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isBadRequest());
+
+        // Verify
+        Mockito.verify(reportService, Mockito.never())
+                .create(Mockito.any(ReportType.class));
     }
 
 }
