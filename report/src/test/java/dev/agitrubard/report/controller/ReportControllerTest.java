@@ -16,12 +16,14 @@ import dev.agitrubard.report.util.CustomMockResultMatchersBuilders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 class ReportControllerTest extends AbstractRestControllerTest {
 
@@ -167,6 +169,77 @@ class ReportControllerTest extends AbstractRestControllerTest {
         // Verify
         Mockito.verify(reportService, Mockito.never())
                 .findAll(Mockito.any(Integer.class), Mockito.any(Integer.class));
+    }
+
+
+    @Test
+    void givenValidId_whenReportFound_thenReturnReportResponse() throws Exception {
+
+        // Given
+        UUID mockId = UUID.fromString("d3fdbd2e-971f-457f-a070-c57ce8ecd81f");
+
+        // When
+        Report mockReport = new ReportBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+        Mockito.when(reportService.findById(mockId))
+                .thenReturn(mockReport);
+
+        // Then
+        String endpoint = BASE_PATH + "/" + mockId;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .get(endpoint);
+
+        CustomSuccessResponse<Report> mockResponse = CustomSuccessResponseBuilder.success();
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isOk())
+                .andExpect(CustomMockResultMatchersBuilders.content()
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("id")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("type")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("status")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("data")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("createdAt")
+                        .isNotEmpty())
+                .andExpect(CustomMockResultMatchersBuilders.content("updatedAt")
+                        .isNotEmpty());
+
+        // Verify
+        Mockito.verify(reportService, Mockito.times(1))
+                .findById(Mockito.any(UUID.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "1",
+            "abc",
+            "not-a-uuid",
+            "g1234567-89ab-cdef-0123-456789abcdef",
+            "ffffffff-ffff-ffff-ffff-fffffffffffff"
+    })
+    void givenId_whenIdDoesNotValid_thenReturnValidationError(String mockId) throws Exception {
+
+        // Then
+        String endpoint = BASE_PATH + "/" + mockId;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
+                .get(endpoint);
+
+        CustomErrorResponse mockErrorResponse = CustomErrorResponseBuilder.VALIDATION_ERROR;
+
+        customMockMvc.perform(mockHttpServletRequestBuilder, mockErrorResponse)
+                .andExpect(CustomMockResultMatchersBuilders.status()
+                        .isBadRequest());
+
+        // Verify
+        Mockito.verify(reportService, Mockito.never())
+                .findById(Mockito.any(UUID.class));
     }
 
 }
