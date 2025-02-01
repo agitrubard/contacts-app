@@ -6,6 +6,7 @@ import dev.agitrubard.contact.model.mapper.PersonCreateRequestToDomainMapper;
 import dev.agitrubard.contact.model.request.PersonCreateRequest;
 import dev.agitrubard.contact.port.PersonDeletePort;
 import dev.agitrubard.contact.port.PersonReadPort;
+import dev.agitrubard.contact.port.PersonSavePort;
 import dev.agitrubard.contact.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.UUID;
 class PersonServiceImpl implements PersonService {
 
     private final PersonReadPort personReadPort;
+    private final PersonSavePort personSavePort;
     private final PersonDeletePort personDeletePort;
 
 
@@ -37,7 +39,7 @@ class PersonServiceImpl implements PersonService {
 
     public void create(PersonCreateRequest createRequest) {
         Person person = personCreateRequestToDomainMapper.map(createRequest);
-        personReadPort.save(person);
+        personSavePort.save(person);
     }
 
     @Override

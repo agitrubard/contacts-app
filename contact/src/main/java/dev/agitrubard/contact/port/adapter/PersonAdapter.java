@@ -6,6 +6,7 @@ import dev.agitrubard.contact.model.mapper.PersonEntityToDomainMapper;
 import dev.agitrubard.contact.model.mapper.PersonToEntityMapper;
 import dev.agitrubard.contact.port.PersonDeletePort;
 import dev.agitrubard.contact.port.PersonReadPort;
+import dev.agitrubard.contact.port.PersonSavePort;
 import dev.agitrubard.contact.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-class PersonAdapter implements PersonReadPort, PersonDeletePort {
+class PersonAdapter implements PersonReadPort, PersonSavePort, PersonDeletePort {
 
     private final PersonRepository personRepository;
 

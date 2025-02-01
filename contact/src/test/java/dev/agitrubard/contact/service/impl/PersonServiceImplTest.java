@@ -8,6 +8,7 @@ import dev.agitrubard.contact.model.request.PersonCreateRequest;
 import dev.agitrubard.contact.model.request.PersonCreateRequestBuilder;
 import dev.agitrubard.contact.port.PersonDeletePort;
 import dev.agitrubard.contact.port.PersonReadPort;
+import dev.agitrubard.contact.port.PersonSavePort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +26,9 @@ class PersonServiceImplTest extends AbstractUnitTest {
 
     @Mock
     PersonReadPort personReadPort;
+
+    @Mock
+    PersonSavePort personSavePort;
 
     @Mock
     PersonDeletePort personDeletePort;
@@ -132,14 +136,14 @@ class PersonServiceImplTest extends AbstractUnitTest {
 
         // When
         Mockito.doNothing()
-                .when(personReadPort)
+                .when(personSavePort)
                 .save(Mockito.any(Person.class));
 
         // Then
         personService.create(mockCreateRequest);
 
         // Verify
-        Mockito.verify(personReadPort, Mockito.times(1))
+        Mockito.verify(personSavePort, Mockito.times(1))
                 .save(Mockito.any(Person.class));
     }
 
