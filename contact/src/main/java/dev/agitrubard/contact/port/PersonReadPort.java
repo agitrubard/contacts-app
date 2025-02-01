@@ -12,6 +12,4 @@ public interface PersonReadPort {
 
     Optional<Person> findById(UUID id);
 
-    void save(Person person);
-
 }

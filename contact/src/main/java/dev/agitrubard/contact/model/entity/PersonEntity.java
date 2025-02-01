@@ -36,7 +36,7 @@ public class PersonEntity extends AbstractEntity {
     private String company;
 
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", orphanRemoval = true)
     private List<PersonContactEntity> contacts;
 
 }
