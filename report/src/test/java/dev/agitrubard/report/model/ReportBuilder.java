@@ -1,6 +1,7 @@
 package dev.agitrubard.report.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class ReportBuilder extends TestDataBuilder<Report> {
 
@@ -12,6 +13,11 @@ public class ReportBuilder extends TestDataBuilder<Report> {
         return this
                 .withCreatedAt(LocalDateTime.now())
                 .withUpdatedAt(LocalDateTime.now().plusMinutes(1));
+    }
+
+    public ReportBuilder withId(UUID id) {
+        data.setId(id);
+        return this;
     }
 
     public ReportBuilder withCreatedAt(LocalDateTime createdAt) {
