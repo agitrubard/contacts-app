@@ -3,7 +3,9 @@ package dev.agitrubard.report.port.adapter;
 import dev.agitrubard.report.model.Report;
 import dev.agitrubard.report.model.entity.ReportEntity;
 import dev.agitrubard.report.model.mapper.ReportEntityToDomainMapper;
+import dev.agitrubard.report.model.mapper.ReportToEntityMapper;
 import dev.agitrubard.report.port.ReportReadPort;
+import dev.agitrubard.report.port.ReportSavePort;
 import dev.agitrubard.report.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -16,11 +18,12 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-class ReportAdapter implements ReportReadPort {
+class ReportAdapter implements ReportReadPort, ReportSavePort {
 
     private final ReportRepository reportRepository;
 
     private final ReportEntityToDomainMapper reportEntityToDomainMapper = ReportEntityToDomainMapper.INSTANCE;
+    private final ReportToEntityMapper reportToEntityMapper = ReportToEntityMapper.INSTANCE;
 
 
     @Override
@@ -35,6 +38,13 @@ class ReportAdapter implements ReportReadPort {
     public Optional<Report> findById(UUID id) {
         return reportRepository.findById(id)
                 .map(reportEntityToDomainMapper::map);
+    }
+
+
+    @Override
+    public void save(Report report) {
+        ReportEntity reportEntity = reportToEntityMapper.map(report);
+        reportRepository.save(reportEntity);
     }
 
 }
