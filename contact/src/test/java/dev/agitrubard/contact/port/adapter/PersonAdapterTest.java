@@ -150,4 +150,24 @@ class PersonAdapterTest extends AbstractUnitTest {
                 .save(Mockito.any(PersonEntity.class));
     }
 
+
+    @Test
+    void givenValidId_whenPersonDeleted_thenDoNothing() {
+
+        // Given
+        UUID mockId = UUID.fromString("02684808-8fa6-4d0f-bdb0-8d8f1a065123");
+
+        // When
+        Mockito.doNothing()
+                .when(personRepository)
+                .deleteById(mockId);
+
+        // Then
+        personAdapter.delete(mockId);
+
+        // Verify
+        Mockito.verify(personRepository, Mockito.times(1))
+                .deleteById(mockId);
+    }
+
 }
