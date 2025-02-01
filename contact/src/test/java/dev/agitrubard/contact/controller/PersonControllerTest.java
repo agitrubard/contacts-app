@@ -232,7 +232,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
+    @ValueSource(strings = {
             "1",
             "abc",
             "not-a-uuid",
@@ -410,7 +410,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({
+    @ValueSource(strings = {
             "1",
             "abc",
             "not-a-uuid",
