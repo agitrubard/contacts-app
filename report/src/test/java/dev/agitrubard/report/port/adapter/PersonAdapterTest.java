@@ -16,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 class ReportAdapterTest extends AbstractUnitTest {
 
@@ -74,6 +76,51 @@ class ReportAdapterTest extends AbstractUnitTest {
         // Verify
         Mockito.verify(reportRepository, Mockito.times(1))
                 .findAll(mockPageable);
+    }
+
+
+    @Test
+    void givenValidId_whenReportFound_thenReturnReport() {
+
+        // Given
+        UUID mockId = UUID.fromString("00352c56-3326-43bb-9454-a732fa66e5e9");
+
+        // When
+        ReportEntity mockReportEntity = new ReportEntityBuilder()
+                .withValidValues()
+                .withId(mockId)
+                .build();
+        Mockito.when(reportRepository.findById(mockId))
+                .thenReturn(Optional.of(mockReportEntity));
+
+        // Then
+        Optional<Report> report = reportAdapter.findById(mockId);
+
+        Assertions.assertTrue(report.isPresent());
+
+        // Verify
+        Mockito.verify(reportRepository, Mockito.times(1))
+                .findById(mockId);
+    }
+
+    @Test
+    void givenValidId_whenReportNotFound_thenReturnEmpty() {
+
+        // Given
+        UUID mockId = UUID.fromString("2c3bf1cb-ad20-4ada-851b-39636bc2d14c");
+
+        // When
+        Mockito.when(reportRepository.findById(mockId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        Optional<Report> report = reportAdapter.findById(mockId);
+
+        Assertions.assertTrue(report.isEmpty());
+
+        // Verify
+        Mockito.verify(reportRepository, Mockito.times(1))
+                .findById(mockId);
     }
 
 }
