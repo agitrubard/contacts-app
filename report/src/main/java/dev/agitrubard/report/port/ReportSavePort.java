@@ -4,6 +4,6 @@ import dev.agitrubard.report.model.Report;
 
 public interface ReportSavePort {
 
-    void save(Report report);
+    Report save(Report report);
 
 }

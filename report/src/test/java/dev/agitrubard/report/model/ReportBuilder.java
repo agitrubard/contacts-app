@@ -36,8 +36,18 @@ public class ReportBuilder extends TestDataBuilder<Report> {
         return this;
     }
 
+    public ReportBuilder withoutCreatedAt() {
+        data.setCreatedAt(null);
+        return this;
+    }
+
     public ReportBuilder withUpdatedAt(LocalDateTime updatedAt) {
         data.setUpdatedAt(updatedAt);
+        return this;
+    }
+
+    public ReportBuilder withoutUpdatedAt() {
+        data.setUpdatedAt(null);
         return this;
     }
 

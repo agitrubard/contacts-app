@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -136,16 +137,27 @@ class ReportAdapterTest extends AbstractUnitTest {
         Report mockReport = new ReportBuilder()
                 .withValidValues()
                 .withoutId()
+                .withoutCreatedAt()
+                .withoutUpdatedAt()
                 .build();
 
         // When
         ReportEntity mockReportEntity = reportToEntityMapper.map(mockReport);
+        mockReportEntity.setId(UUID.fromString("f0e57c79-62ae-451c-ba82-46f4279665e0"));
+        mockReportEntity.setCreatedAt(LocalDateTime.now());
 
         Mockito.when(reportRepository.save(Mockito.any(ReportEntity.class)))
                 .thenReturn(mockReportEntity);
 
         // Then
-        reportAdapter.save(mockReport);
+        Report report = reportAdapter.save(mockReport);
+
+        Assertions.assertNotNull(report.getId());
+        Assertions.assertEquals(mockReport.getType(), report.getType());
+        Assertions.assertEquals(mockReport.getStatus(), report.getStatus());
+        Assertions.assertEquals(mockReport.getData(), report.getData());
+        Assertions.assertNotNull(report.getCreatedAt());
+        Assertions.assertNull(report.getUpdatedAt());
 
         // Verify
         Mockito.verify(reportRepository, Mockito.times(1))

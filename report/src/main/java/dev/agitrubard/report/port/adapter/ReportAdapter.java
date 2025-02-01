@@ -42,9 +42,10 @@ class ReportAdapter implements ReportReadPort, ReportSavePort {
 
 
     @Override
-    public void save(Report report) {
-        ReportEntity reportEntity = reportToEntityMapper.map(report);
-        reportRepository.save(reportEntity);
+    public Report save(Report report) {
+        ReportEntity reportEntityToBeSave = reportToEntityMapper.map(report);
+        ReportEntity reportEntity = reportRepository.save(reportEntityToBeSave);
+        return reportEntityToDomainMapper.map(reportEntity);
     }
 
 }
