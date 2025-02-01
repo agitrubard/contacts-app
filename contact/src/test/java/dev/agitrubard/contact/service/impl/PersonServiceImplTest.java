@@ -84,7 +84,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
         Person mockPerson = new PersonBuilder()
                 .withValidValues()
                 .build();
-        Mockito.when(personReadPort.findById(Mockito.any()))
+        Mockito.when(personReadPort.findById(Mockito.any(UUID.class)))
                 .thenReturn(Optional.of(mockPerson));
 
         // Then
@@ -94,7 +94,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
 
         // Verify
         Mockito.verify(personReadPort, Mockito.times(1))
-                .findById(Mockito.any());
+                .findById(Mockito.any(UUID.class));
     }
 
     @Test
@@ -104,7 +104,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
         UUID mockId = UUID.fromString("8fd17110-9cac-4ed8-9575-ed9e34538d85");
 
         // When
-        Mockito.when(personReadPort.findById(Mockito.any()))
+        Mockito.when(personReadPort.findById(Mockito.any(UUID.class)))
                 .thenReturn(Optional.empty());
 
         // Then
@@ -115,7 +115,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
 
         // Verify
         Mockito.verify(personReadPort, Mockito.times(1))
-                .findById(Mockito.any());
+                .findById(Mockito.any(UUID.class));
     }
 
 
@@ -150,7 +150,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
         Person mockPerson = new PersonBuilder()
                 .withValidValues()
                 .build();
-        Mockito.when(personReadPort.findById(Mockito.any()))
+        Mockito.when(personReadPort.findById(Mockito.any(UUID.class)))
                 .thenReturn(Optional.of(mockPerson));
 
         Mockito.doNothing()
@@ -175,7 +175,7 @@ class PersonServiceImplTest extends AbstractUnitTest {
         UUID mockId = UUID.fromString("fdf209ce-b541-4da7-897b-d525ac23ccfa");
 
         // When
-        Mockito.when(personReadPort.findById(Mockito.any()))
+        Mockito.when(personReadPort.findById(Mockito.any(UUID.class)))
                 .thenReturn(Optional.empty());
 
         // Then
