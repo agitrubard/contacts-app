@@ -21,6 +21,11 @@ public class ReportBuilder extends TestDataBuilder<Report> {
         return this;
     }
 
+    public ReportBuilder withoutId() {
+        data.setId(null);
+        return this;
+    }
+
     public ReportBuilder withData(String data) {
         this.data.setData(data);
         return this;

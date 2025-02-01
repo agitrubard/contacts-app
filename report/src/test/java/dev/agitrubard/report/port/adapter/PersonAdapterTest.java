@@ -2,8 +2,10 @@ package dev.agitrubard.report.port.adapter;
 
 import dev.agitrubard.report.AbstractUnitTest;
 import dev.agitrubard.report.model.Report;
+import dev.agitrubard.report.model.ReportBuilder;
 import dev.agitrubard.report.model.entity.ReportEntity;
 import dev.agitrubard.report.model.entity.ReportEntityBuilder;
+import dev.agitrubard.report.model.mapper.ReportToEntityMapper;
 import dev.agitrubard.report.repository.ReportRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,9 @@ class ReportAdapterTest extends AbstractUnitTest {
 
     @Mock
     ReportRepository reportRepository;
+
+
+    private final ReportToEntityMapper reportToEntityMapper = ReportToEntityMapper.INSTANCE;
 
 
     @Test
@@ -121,6 +126,30 @@ class ReportAdapterTest extends AbstractUnitTest {
         // Verify
         Mockito.verify(reportRepository, Mockito.times(1))
                 .findById(mockId);
+    }
+
+
+    @Test
+    void givenValidReport_whenReportSaved_thenDoNothing() {
+
+        // Given
+        Report mockReport = new ReportBuilder()
+                .withValidValues()
+                .withoutId()
+                .build();
+
+        // When
+        ReportEntity mockReportEntity = reportToEntityMapper.map(mockReport);
+
+        Mockito.when(reportRepository.save(Mockito.any(ReportEntity.class)))
+                .thenReturn(mockReportEntity);
+
+        // Then
+        reportAdapter.save(mockReport);
+
+        // Verify
+        Mockito.verify(reportRepository, Mockito.times(1))
+                .save(Mockito.any(ReportEntity.class));
     }
 
 }
