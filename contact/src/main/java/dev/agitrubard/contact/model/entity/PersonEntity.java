@@ -1,5 +1,6 @@
 package dev.agitrubard.contact.model.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class PersonEntity extends AbstractEntity {
     private String company;
 
 
-    @OneToMany(mappedBy = "person", orphanRemoval = true)
+    @OneToMany(mappedBy = "person", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<PersonContactEntity> contacts = new ArrayList<>();
 
 }

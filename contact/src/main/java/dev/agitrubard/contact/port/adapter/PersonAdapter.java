@@ -45,6 +45,7 @@ class PersonAdapter implements PersonReadPort, PersonSavePort, PersonDeletePort 
     @Override
     public void save(Person person) {
         PersonEntity personEntity = personToEntityMapper.map(person);
+        personEntity.getContacts().forEach(personContactEntity -> personContactEntity.setPerson(personEntity));
         personRepository.save(personEntity);
     }
 

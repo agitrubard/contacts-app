@@ -19,4 +19,6 @@ public class PersonContact extends AbstractDomainModel {
     private String city;
     private String district;
 
+    private Person person;
+
 }
