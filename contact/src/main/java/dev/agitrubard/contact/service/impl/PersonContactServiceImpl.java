@@ -6,8 +6,6 @@ import dev.agitrubard.contact.model.Person;
 import dev.agitrubard.contact.model.PersonContact;
 import dev.agitrubard.contact.model.mapper.PersonContactAddRequestToDomainMapper;
 import dev.agitrubard.contact.model.request.PersonContactAddRequest;
-import dev.agitrubard.contact.port.PersonContactDeletePort;
-import dev.agitrubard.contact.port.PersonContactReadPort;
 import dev.agitrubard.contact.port.PersonReadPort;
 import dev.agitrubard.contact.port.PersonSavePort;
 import dev.agitrubard.contact.service.PersonContactService;
@@ -22,8 +20,6 @@ class PersonContactServiceImpl implements PersonContactService {
 
     private final PersonReadPort personReadPort;
     private final PersonSavePort personSavePort;
-    private final PersonContactReadPort personContactReadPort;
-    private final PersonContactDeletePort personContactDeletePort;
 
     private final PersonContactAddRequestToDomainMapper personContactAddRequestToDomainMapper = PersonContactAddRequestToDomainMapper.INSTANCE;
 
@@ -43,10 +39,12 @@ class PersonContactServiceImpl implements PersonContactService {
     @Override
     public void delete(UUID id) {
 
-        personContactReadPort.findById(id)
+        Person person = personReadPort.findByContactId(id)
                 .orElseThrow(() -> new PersonContactNotFoundException(id));
 
-        personContactDeletePort.delete(id);
+        person.getContacts().removeIf(personContact -> personContact.getId().equals(id));
+
+        personSavePort.save(person);
     }
 
 }
