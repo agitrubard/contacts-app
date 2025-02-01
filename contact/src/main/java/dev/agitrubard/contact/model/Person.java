@@ -1,10 +1,12 @@
 package dev.agitrubard.contact.model;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +21,7 @@ public class Person extends AbstractDomainModel {
     private String lastName;
     private String company;
 
-    private List<PersonContact> contacts;
+    @Builder.Default
+    private List<PersonContact> contacts = new ArrayList<>();
 
 }

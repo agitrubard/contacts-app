@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +38,6 @@ public class PersonEntity extends AbstractEntity {
 
 
     @OneToMany(mappedBy = "person", orphanRemoval = true)
-    private List<PersonContactEntity> contacts;
+    private List<PersonContactEntity> contacts = new ArrayList<>();
 
 }
