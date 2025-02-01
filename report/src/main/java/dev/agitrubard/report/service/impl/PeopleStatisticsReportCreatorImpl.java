@@ -1,13 +1,23 @@
 package dev.agitrubard.report.service.impl;
 
+import dev.agitrubard.contact.model.PersonStatistic;
+import dev.agitrubard.contact.port.PersonStatisticReadPort;
 import dev.agitrubard.report.model.enums.ReportType;
 import dev.agitrubard.report.service.ReportCreator;
+import dev.agitrubard.report.util.JsonUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
+@RequiredArgsConstructor
 class PeopleStatisticsReportCreatorImpl implements ReportCreator {
+
+    private final PersonStatisticReadPort personStatisticReadPort;
+
 
     @Override
     public ReportType getType() {
@@ -16,24 +26,14 @@ class PeopleStatisticsReportCreatorImpl implements ReportCreator {
 
     @Override
     public String create() {
-        return """
-                {
-                    "statistics": [
-                        {
-                            "city": "İstanbul",
-                            "district": "Kadıköy",
-                            "peopleCount": 12,
-                            "phoneNumbersCount": 9
-                        },
-                        {
-                            "city": "Ankara",
-                            "district": "Çankaya",
-                            "peopleCount": 3,
-                            "phoneNumbersCount": 26
-                        }
-                    ]
-                }
-                """;
+
+        log.info("Creating People Statistics Report...");
+
+        List<PersonStatistic> personStatistics = personStatisticReadPort.findAllStatisticsByLocation();
+
+        log.info("People Statistics Report created successfully!");
+
+        return "{\"statistics\":%s}".formatted(JsonUtil.toString(personStatistics));
     }
 
 }
