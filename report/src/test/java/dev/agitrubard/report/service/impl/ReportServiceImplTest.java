@@ -2,12 +2,16 @@ package dev.agitrubard.report.service.impl;
 
 import dev.agitrubard.report.AbstractUnitTest;
 import dev.agitrubard.report.exception.ReportNotFoundException;
+import dev.agitrubard.report.exception.ReportTypeNotImplementedException;
 import dev.agitrubard.report.model.Report;
 import dev.agitrubard.report.model.ReportBuilder;
+import dev.agitrubard.report.model.enums.ReportType;
 import dev.agitrubard.report.port.ReportReadPort;
+import dev.agitrubard.report.port.ReportSavePort;
+import dev.agitrubard.report.service.ReportCreator;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -17,11 +21,30 @@ import java.util.UUID;
 
 class ReportServiceImplTest extends AbstractUnitTest {
 
-    @InjectMocks
     ReportServiceImpl reportService;
 
     @Mock
     ReportReadPort reportReadPort;
+
+    @Mock
+    ReportSavePort reportSavePort;
+
+    @Mock
+    PeopleStatisticsReportCreatorImpl peopleStatisticsReportCreatorImpl;
+
+    @BeforeEach
+    void setUp() {
+
+        List<ReportCreator> reportCreators = List.of(
+                peopleStatisticsReportCreatorImpl
+        );
+
+        this.reportService = new ReportServiceImpl(
+                this.reportReadPort,
+                this.reportSavePort,
+                reportCreators
+        );
+    }
 
 
     @Test
@@ -115,6 +138,83 @@ class ReportServiceImplTest extends AbstractUnitTest {
         // Verify
         Mockito.verify(reportReadPort, Mockito.times(1))
                 .findById(Mockito.any(UUID.class));
+    }
+
+
+    @Test
+    void givenValidReportType_whenReportCreatorFound_thenCreateReport() {
+
+        // Given
+        ReportType mockType = ReportType.PEOPLE_STATISTICS_BY_LOCATION;
+
+        // When
+        Mockito.when(peopleStatisticsReportCreatorImpl.getType())
+                .thenReturn(ReportType.PEOPLE_STATISTICS_BY_LOCATION);
+
+        String mockData = """
+                {
+                    "statistics": [
+                        {
+                            "city": "İstanbul",
+                            "district": "Kadıköy",
+                            "peopleCount": 12,
+                            "phoneNumbersCount": 9
+                        },
+                        {
+                            "city": "Ankara",
+                            "district": "Çankaya",
+                            "peopleCount": 3,
+                            "phoneNumbersCount": 26
+                        }
+                    ]
+                }
+                """;
+        Mockito.when(peopleStatisticsReportCreatorImpl.create())
+                .thenReturn(mockData);
+
+        Mockito.doNothing()
+                .when(reportSavePort)
+                .save(Mockito.any(Report.class));
+
+        // Then
+        reportService.create(mockType);
+
+        // Verify
+        Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.times(1))
+                .getType();
+
+        Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.times(1))
+                .create();
+
+        Mockito.verify(reportSavePort, Mockito.times(1))
+                .save(Mockito.any(Report.class));
+    }
+
+    @Test
+    void givenReportTypeAsNull_whenReportCreatorDoesNotFound_thenThrowReportTypeNotImplementedException() {
+
+        // Given
+        ReportType mockType = null;
+
+        // When
+        Mockito.when(peopleStatisticsReportCreatorImpl.getType())
+                .thenReturn(ReportType.PEOPLE_STATISTICS_BY_LOCATION);
+
+        // Then
+        Assertions.assertThrows(
+                ReportTypeNotImplementedException.class,
+                () -> reportService.create(mockType)
+        );
+
+        // Verify
+        Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.times(1))
+                .getType();
+
+        Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.never())
+                .create();
+
+        Mockito.verify(reportSavePort, Mockito.never())
+                .save(Mockito.any(Report.class));
     }
 
 }
