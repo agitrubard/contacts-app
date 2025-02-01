@@ -4,6 +4,7 @@ import dev.agitrubard.report.model.Report;
 import dev.agitrubard.report.model.mapper.ReportToListResponseMapper;
 import dev.agitrubard.report.model.mapper.ReportToResponseMapper;
 import dev.agitrubard.report.model.request.CustomPageRequest;
+import dev.agitrubard.report.model.request.ReportCreateRequest;
 import dev.agitrubard.report.model.response.CustomSuccessResponse;
 import dev.agitrubard.report.model.response.ReportListResponse;
 import dev.agitrubard.report.model.response.ReportResponse;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,6 +56,15 @@ class ReportController {
         return CustomSuccessResponse.success(
                 reportToResponseMapper.map(report)
         );
+    }
+
+
+    @PostMapping
+    CustomSuccessResponse<Void> create(@RequestBody @Valid ReportCreateRequest createRequest) {
+
+        reportService.create(createRequest.getType());
+
+        return CustomSuccessResponse.success();
     }
 
 }
