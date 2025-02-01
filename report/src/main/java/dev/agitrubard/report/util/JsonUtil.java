@@ -33,4 +33,15 @@ public final class JsonUtil {
         }
     }
 
+    public static String toString(Object object) {
+
+        try {
+            return OBJECT_MAPPER.writeValueAsString(object);
+        } catch (JsonProcessingException exception) {
+            log.warn("Failed to parse object to JSON string: {}, message: {}", object, exception.getMessage());
+            return null;
+        }
+
+    }
+
 }
