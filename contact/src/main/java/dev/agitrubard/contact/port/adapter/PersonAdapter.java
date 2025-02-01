@@ -44,4 +44,9 @@ class PersonAdapter implements PersonReadPort {
         personRepository.save(personEntity);
     }
 
+    @Override
+    public void delete(UUID id) {
+        personRepository.deleteById(id);
+    }
+
 }
