@@ -7,6 +7,10 @@ services:
     extends:
       file: ./report/docker-compose.yml
       service: report-service-database
+  report-service-queue:
+    extends:
+      file: ./report/docker-compose.yml
+      service: report-service-queue
 
 networks:
   contacts_app_network:

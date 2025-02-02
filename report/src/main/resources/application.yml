@@ -25,6 +25,11 @@ spring:
     database-change-log-table: LIQUIBASE_CHANGE_LOG
     database-change-log-lock-table: LIQUIBASE_CHANGE_LOG_LOCK
     drop-first: ${LIQUIBASE_ENABLE_DROP_FIRST:false}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: contacts_app
+    password: contacts_app_pass
 
 feign-client:
   contact:
