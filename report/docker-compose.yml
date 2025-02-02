@@ -15,3 +15,17 @@ services:
       - "54322:5432"
     networks:
       - contacts_app_network
+  report-service-queue:
+    container_name: report-service-queue
+    image: rabbitmq:4.0.5-management
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: contacts_app
+      RABBITMQ_DEFAULT_PASS: contacts_app_pass
+    volumes:
+      - ./docker/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - contacts_app_network
