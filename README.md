@@ -129,7 +129,7 @@ docker compose down -v
 
 ## Postman
 
-### [API Documentation](https://documenter.getpostman.com/view/23090035/2sAYX3rNwy) & [Workspace](https://www.postman.com/agitrubard/workspace/contacts-application)
+### [API Documentation](https://documenter.getpostman.com/view/23090035/2sAYX3rP2U) & [Workspace](https://www.postman.com/agitrubard/workspace/contacts-application)
 
 ---
 
