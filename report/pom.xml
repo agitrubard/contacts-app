@@ -14,14 +14,19 @@
     <artifactId>report</artifactId>
     <version>0.0.1</version>
     <name>report</name>
-    <description>Demo project for Spring Boot</description>
+    <description>report</description>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <dependencies>
+        <!-- ========================= -->
+        <!-- service call dependencies -->
+        <!-- ========================= -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!-- ========================= -->
+        <!-- service call dependencies -->
+        <!-- ========================= -->
+    </dependencies>
+
 </project>

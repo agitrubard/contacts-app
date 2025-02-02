@@ -2,7 +2,7 @@ package dev.agitrubard.report.exception.handler;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import dev.agitrubard.report.AbstractUnitTest;
+import dev.agitrubard.AbstractUnitTest;
 import dev.agitrubard.report.exception.AbstractNotFoundException;
 import dev.agitrubard.report.model.response.CustomErrorResponse;
 import jakarta.validation.ConstraintViolationException;

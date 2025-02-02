@@ -1,4 +1,4 @@
-package dev.agitrubard.report;
+package dev.agitrubard;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

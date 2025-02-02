@@ -20,4 +20,16 @@ public class Report extends AbstractDomainModel {
     private ReportStatus status;
     private String data;
 
+    public static Report pending(ReportType type) {
+        return Report.builder()
+                .type(type)
+                .status(ReportStatus.PENDING)
+                .build();
+    }
+
+    public void complete(String data) {
+        this.data = data;
+        this.status = ReportStatus.COMPLETED;
+    }
+
 }

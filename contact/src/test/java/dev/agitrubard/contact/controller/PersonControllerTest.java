@@ -12,6 +12,7 @@ import dev.agitrubard.contact.model.response.CustomErrorResponseBuilder;
 import dev.agitrubard.contact.model.response.CustomSuccessResponse;
 import dev.agitrubard.contact.model.response.CustomSuccessResponseBuilder;
 import dev.agitrubard.contact.model.response.PersonListResponse;
+import dev.agitrubard.contact.model.response.PersonResponse;
 import dev.agitrubard.contact.service.PersonService;
 import dev.agitrubard.contact.util.CustomMockMvcRequestBuilders;
 import dev.agitrubard.contact.util.CustomMockResultMatchersBuilders;
@@ -194,7 +195,7 @@ class PersonControllerTest extends AbstractRestControllerTest {
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = CustomMockMvcRequestBuilders
                 .get(endpoint);
 
-        CustomSuccessResponse<Person> mockResponse = CustomSuccessResponseBuilder.success();
+        CustomSuccessResponse<PersonResponse> mockResponse = CustomSuccessResponseBuilder.success();
 
         customMockMvc.perform(mockHttpServletRequestBuilder, mockResponse)
                 .andExpect(CustomMockResultMatchersBuilders.status()
