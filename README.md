@@ -1,6 +1,6 @@
 # Contacts Application
 
-<img src="/documents/icon.png?raw=true" alt="Icon" width="50"/> 
+<img src="/documents/icon.png?raw=true" alt="Icon" width="60"/> 
 
 This application consists of two microservices, Contact and Report, forming a simple phone directory system. These
 services communicate asynchronously to carry out the following processes:
@@ -46,6 +46,8 @@ the Contact service) and for generating location-based statistical reports (the 
     * Spring Boot Actuator
     * Spring Boot Test (Junit)
     * Spring Boot AMQP
+    * Spring Cloud
+      * OpenFeign
 
 **Build Tool**
 
