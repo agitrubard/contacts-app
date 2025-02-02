@@ -7,7 +7,6 @@ import dev.agitrubard.report.model.Report;
 import dev.agitrubard.report.model.ReportBuilder;
 import dev.agitrubard.report.model.enums.ReportType;
 import dev.agitrubard.report.port.ReportReadPort;
-import dev.agitrubard.report.port.ReportSavePort;
 import dev.agitrubard.report.service.ReportCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,9 +26,6 @@ class ReportServiceImplTest extends AbstractUnitTest {
     ReportReadPort reportReadPort;
 
     @Mock
-    ReportSavePort reportSavePort;
-
-    @Mock
     PeopleStatisticsReportCreatorImpl peopleStatisticsReportCreatorImpl;
 
     @BeforeEach
@@ -41,7 +37,6 @@ class ReportServiceImplTest extends AbstractUnitTest {
 
         this.reportService = new ReportServiceImpl(
                 this.reportReadPort,
-                this.reportSavePort,
                 reportCreators
         );
     }
@@ -151,35 +146,6 @@ class ReportServiceImplTest extends AbstractUnitTest {
         Mockito.when(peopleStatisticsReportCreatorImpl.getType())
                 .thenReturn(ReportType.PEOPLE_STATISTICS_BY_LOCATION);
 
-        String mockData = """
-                {
-                    "statistics": [
-                        {
-                            "city": "İstanbul",
-                            "district": "Kadıköy",
-                            "peopleCount": 12,
-                            "phoneNumbersCount": 9
-                        },
-                        {
-                            "city": "Ankara",
-                            "district": "Çankaya",
-                            "peopleCount": 3,
-                            "phoneNumbersCount": 26
-                        }
-                    ]
-                }
-                """;
-        Mockito.when(peopleStatisticsReportCreatorImpl.create())
-                .thenReturn(mockData);
-
-        Report mockReport = new ReportBuilder()
-                .withValidValues()
-                .withType(mockType)
-                .withData(mockData)
-                .build();
-        Mockito.when(reportSavePort.save(Mockito.any(Report.class)))
-                .thenReturn(mockReport);
-
         // Then
         reportService.create(mockType);
 
@@ -188,10 +154,13 @@ class ReportServiceImplTest extends AbstractUnitTest {
                 .getType();
 
         Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.times(1))
+                .request();
+
+        Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.never())
                 .create();
 
-        Mockito.verify(reportSavePort, Mockito.times(2))
-                .save(Mockito.any(Report.class));
+        Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.never())
+                .create(Mockito.any(Report.class));
     }
 
     @Test
@@ -215,10 +184,13 @@ class ReportServiceImplTest extends AbstractUnitTest {
                 .getType();
 
         Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.never())
+                .request();
+
+        Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.never())
                 .create();
 
-        Mockito.verify(reportSavePort, Mockito.times(1))
-                .save(Mockito.any(Report.class));
+        Mockito.verify(peopleStatisticsReportCreatorImpl, Mockito.never())
+                .create(Mockito.any(Report.class));
     }
 
 }

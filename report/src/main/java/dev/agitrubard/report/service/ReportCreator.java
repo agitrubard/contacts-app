@@ -6,6 +6,6 @@ public interface ReportCreator {
 
     ReportType getType();
 
-    String create();
+    void request();
 
 }

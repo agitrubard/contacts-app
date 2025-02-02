@@ -5,7 +5,6 @@ import dev.agitrubard.report.exception.ReportTypeNotImplementedException;
 import dev.agitrubard.report.model.Report;
 import dev.agitrubard.report.model.enums.ReportType;
 import dev.agitrubard.report.port.ReportReadPort;
-import dev.agitrubard.report.port.ReportSavePort;
 import dev.agitrubard.report.service.ReportCreator;
 import dev.agitrubard.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import java.util.UUID;
 class ReportServiceImpl implements ReportService {
 
     private final ReportReadPort reportReadPort;
-    private final ReportSavePort reportSavePort;
     private final List<ReportCreator> reportCreators;
 
 
@@ -38,18 +36,11 @@ class ReportServiceImpl implements ReportService {
 
     @Override
     public void create(ReportType type) {
-
-        Report reportToBeSave = Report.pending(type);
-        Report report = reportSavePort.save(reportToBeSave);
-
-        String data = reportCreators.stream()
+        reportCreators.stream()
                 .filter(creator -> type == creator.getType())
                 .findFirst()
                 .orElseThrow(() -> new ReportTypeNotImplementedException(type))
-                .create();
-
-        report.complete(data);
-        reportSavePort.save(report);
+                .request();
     }
 
 }
